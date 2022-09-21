@@ -38,11 +38,8 @@ function renderButtons() {
 }
 
 function difficultiesSelector(level, diffI) {
-  gBoard = []
-  gGame.isOn = false
-  clearInterval(gameTimer)
-  totalSeconds = 0
-  document.getElementById('count_up_timer').innerHTML = 0
+  clearData()
+
   initGame(diffI)
 }
 
@@ -56,6 +53,15 @@ function renderCell(elCell, cellI, cellJ) {
   gGame.shownCount++
 }
 
+function clearData() {
+  gGame.isOn = false
+  gBoard = []
+  clearInterval(gameTimer)
+  gGame.secsPassed = 0
+  totalSeconds = 0
+  gGame.shownCount = 0
+  document.getElementById('count_up_timer').innerHTML = gGame.secsPassed
+}
 document.querySelector('.game-board').addEventListener(
   'contextmenu',
   function (e) {
