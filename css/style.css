@@ -1,0 +1,47 @@
+body {
+  text-align: center;
+}
+.level-buttons {
+  width: 240px;
+  height: 30px;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 20px;
+
+  border-radius: 20px;
+  background-image: linear-gradient(to left, red, orange, yellow, green);
+  text-align: center;
+}
+
+.level-buttons button {
+  width: 70px;
+  border: 1px black;
+
+  background-color: rgb(255, 255, 255, 0);
+  margin: 2px;
+
+  cursor: pointer;
+  font-family: serif;
+  font-size: 20px;
+}
+
+.game-area {
+  width: 600px;
+  margin: auto;
+}
+.game-board {
+  width: auto;
+  text-align: center;
+  margin-left: auto;
+  border: solid 2px black;
+}
+
+.cell {
+  margin: auto;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: grey;
+  color: rgb(194, 20, 20);
+  font-display: none;
+}
