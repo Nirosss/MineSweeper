@@ -11,6 +11,7 @@ var gLevel = [
 ]
 
 function initGame(level = 0) {
+  gGame.isOn = true
   renderButtons()
   buildBoard(gLevel[level])
   setMinesNegsCount(gBoard)
@@ -67,14 +68,9 @@ function setMinesNegsCount(Board) {
 }
 
 function cellClicked(elCell, cellI, cellJ) {
-  if (gBoard[cellI][cellJ].minesAroundCount !== '') {
-  }
+  if (!gGame.shownCount) gameTimer = setInterval(countUpTimer, 1000)
   renderCell(elCell, cellI, cellJ)
-
-  if (!gGame.isOn) {
-    gGame.isOn = true
-    gameTimer = setInterval(countUpTimer, 1000)
-  }
+  checkGameOver(cellI, cellJ)
 }
 
 function cellMarked(elCell, cellI, cellJ) {
@@ -84,4 +80,10 @@ function cellMarked(elCell, cellI, cellJ) {
   gGame.markedCount += 1
 }
 
-function checkGameOver() {}
+function checkGameOver(cellI, cellJ) {
+  if (gBoard[cellI][cellJ].isMine) {
+    console.log('Game Over')
+    gGame.isOn = false
+    clearInterval(gameTimer) // add smiley indicator
+  }
+}

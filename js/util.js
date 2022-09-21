@@ -38,19 +38,22 @@ function renderButtons() {
 }
 
 function difficultiesSelector(level, diffI) {
-  console.log(level)
   gBoard = []
-  // clearInterval(timerId)
-  //document.getElementById('count_up_timer').innerHTML = '0:0.0'
+  gGame.isOn = false
+  clearInterval(gameTimer)
+  totalSeconds = 0
+  document.getElementById('count_up_timer').innerHTML = 0
   initGame(diffI)
 }
 
 function renderCell(elCell, cellI, cellJ) {
+  if (!gGame.isOn) return
   if (gBoard[cellI][cellJ].isShown || gBoard[cellI][cellJ].isMarked) return
   gBoard[cellI][cellJ].isMine
     ? (elCell.innerHTML = MINE)
     : (elCell.innerText = gBoard[cellI][cellJ].minesAroundCount)
   gBoard[cellI][cellJ].isShown = true
+  gGame.shownCount++
 }
 
 document.querySelector('.game-board').addEventListener(
