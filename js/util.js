@@ -1,12 +1,14 @@
 'use strict'
 var totalSeconds = 0
+var currLevel = 0
 
 function renderBoard(board) {
-  //,selector) {
+  // var cellId
   var strHTML = ''
   for (var i = 0; i < board.length; i++) {
     strHTML += '<tr>'
     for (var j = 0; j < board[0].length; j++) {
+      // cellId = (i + 1) * (j + 1)
       strHTML += `<td class="cell" data-i="${i}" data-j="${j}" onclick="cellClicked(this,${i},${j})"
       oncontextmenu="cellMarked(this,${i},${j})"></td>`
     }
@@ -24,43 +26,55 @@ function getRandomIntInclusive(min, max) {
 function countUpTimer() {
   ++totalSeconds
   gGame.secsPassed = totalSeconds
-  document.getElementById('count_up_timer').innerHTML = gGame.secsPassed
+  document.getElementById(
+    'count-up-timer'
+  ).innerHTML = `Time ${gGame.secsPassed}`
 }
 
 function renderButtons() {
   var strHTML = ''
   for (var i = 0; i < 3; i++) {
-    strHTML += `<button "data=${i}" onclick="difficultiesSelector(this,${i})" > 
+    strHTML += `<button "data=${i}" onclick="difficultiesSelector(${i})" > 
     ${gLevel[i].label} </button>`
   }
   var elButton = document.querySelector('.level-buttons')
   elButton.innerHTML = strHTML
 }
 
-function difficultiesSelector(level, diffI) {
-  clearData()
-
-  initGame(diffI)
+function difficultiesSelector(diffI) {
+  clearGameData()
+  currLevel = diffI
+  initGame()
 }
 
 function renderCell(elCell, cellI, cellJ) {
   if (!gGame.isOn) return
   if (gBoard[cellI][cellJ].isShown || gBoard[cellI][cellJ].isMarked) return
-  gBoard[cellI][cellJ].isMine
-    ? (elCell.innerHTML = MINE)
-    : (elCell.innerText = gBoard[cellI][cellJ].minesAroundCount)
+  if (gBoard[cellI][cellJ].isMine) {
+    elCell.innerHTML = MINE
+  } else {
+    if (gBoard[cellI][cellJ].minesAroundCount)
+      elCell.innerText = gBoard[cellI][cellJ].minesAroundCount
+  }
   gBoard[cellI][cellJ].isShown = true
+  elCell.classList.add('shown')
   gGame.shownCount++
 }
 
-function clearData() {
+function clearGameData() {
   gGame.isOn = false
   gBoard = []
   clearInterval(gameTimer)
   gGame.secsPassed = 0
   totalSeconds = 0
   gGame.shownCount = 0
-  document.getElementById('count_up_timer').innerHTML = gGame.secsPassed
+  gGame.markedCount = 0
+  foundMines = 0
+  document.getElementById(
+    'count-up-timer'
+  ).innerHTML = `Time ${gGame.secsPassed}`
+  document.getElementById('flags-counter').innerHTML = `${notUsedFlags}`
+  document.getElementById('restart-button').innerText = '😊'
 }
 document.querySelector('.game-board').addEventListener(
   'contextmenu',

@@ -22,16 +22,40 @@ body {
   font-size: 20px;
 }
 
+.game-data {
+  height: 40px;
+  display: inline-block;
+  align-self: center;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+#flags-counter {
+  font-size: 28px;
+}
+#restart-button {
+  cursor: pointer;
+  margin-right: 100px;
+  margin-left: 100px;
+}
+
+/* #count-up-timer {
+  font-size: 28px;
+} */
+
+table {
+  align-self: center;
+  display: inline-block;
+}
+
 .game-area {
-  width: 480px;
+  margin-top: 50px;
+
   margin: auto;
 }
+
 .game-board {
-  width: auto;
   text-align: center;
   border: 1px solid black;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .cell {
@@ -41,5 +65,8 @@ body {
   cursor: pointer;
   background-color: grey;
   color: rgb(194, 20, 20);
-  font-display: none;
+}
+
+.cell.shown {
+  background-color: rgb(168, 159, 159);
 }
