@@ -65,6 +65,7 @@ function clearGameData() {
   gGame.isOn = false
   gBoard = []
   clearInterval(gameTimer)
+  gameTimer = 0
   gGame.secsPassed = 0
   totalSeconds = 0
   gGame.shownCount = 0

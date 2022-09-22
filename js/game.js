@@ -55,27 +55,22 @@ function setMinesNegsCount(elCell, cellI, cellJ) {
     }
     gBoard[cellI][cellJ].minesAroundCount = minesCount
   }
+  // if (!minesCount) expandShown(cellI, cellJ)
   renderCell(elCell, cellI, cellJ)
 }
 
 function cellClicked(elCell, cellI, cellJ) {
-  if (gGame.markedCount === 0 && gGame.shownCount === 0) {
-    gameTimer = setInterval(countUpTimer, 1000)
-  }
-  console.log(gameTimer)
+  if (!gameTimer) gameTimer = setInterval(countUpTimer, 1000)
+
   setMinesNegsCount(elCell, cellI, cellJ)
   //renderCell(elCell, cellI, cellJ)
   checkGameOver(cellI, cellJ)
 }
 
 function cellMarked(elCell, cellI, cellJ) {
-  console.log(notUsedFlags)
-  if (gGame.markedCount === 0 && gGame.shownCount === 0) {
-    gameTimer = setInterval(countUpTimer, 1000)
-  }
+  if (!gameTimer) gameTimer = setInterval(countUpTimer, 1000)
   if (notUsedFlags < 1) return
   if (gBoard[cellI][cellJ].isShown) return
-
   if (gBoard[cellI][cellJ].isMarked) {
     gBoard[cellI][cellJ].isMarked = false
     elCell.innerHTML = ''
@@ -89,7 +84,6 @@ function cellMarked(elCell, cellI, cellJ) {
     if (gBoard[cellI][cellJ].isMine) foundMines++
   }
   checkVictory()
-  console.log(notUsedFlags)
   document.getElementById('flags-counter').innerText = notUsedFlags
 }
 
@@ -112,3 +106,12 @@ function checkVictory() {
     clearInterval(gameTimer)
   }
 }
+
+// function expandShown(i, j) {
+//   var newCellI = i
+//   var newCellJ = j + 1
+//   var newCellId = (newCellI + 1) * (newCellJ + 1)
+//   elCell = document.getElementById(`$newCellId`)
+//   console.log(elCell)
+//   setMinesNegsCount(elCell, newCellI, newCellJ)
+// }

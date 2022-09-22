@@ -1,5 +1,12 @@
 body {
   text-align: center;
+  background: url('/img/background.jpg');
+  background-size: contain;
+}
+
+h1 {
+  color: azure;
+  font-size: 44px;
 }
 .level-buttons {
   width: 320px;
@@ -63,7 +70,7 @@ table {
   width: 30px;
   height: 30px;
   cursor: pointer;
-  background-color: grey;
+  background-color: rgb(45, 44, 44);
   color: rgb(194, 20, 20);
 }
 
