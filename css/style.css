@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  background:url('img/background.jpg');
+  background-image: url('/img/background.jpg');
   background-size: contain;
 }
 
