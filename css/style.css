@@ -6,13 +6,13 @@ body {
 
 h1 {
   color: azure;
-  font-size: 44px;
+  font-size: 50px;
 }
 .level-buttons {
   width: 320px;
   height: 30px;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 10px;
   margin-bottom: 20px;
   border-radius: 20px;
   background-image: linear-gradient(to left, red, orange, yellow, green);
@@ -33,21 +33,16 @@ h1 {
   height: 40px;
   display: inline-block;
   align-self: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 28px;
+  color: azure;
 }
-#flags-counter {
-  font-size: 28px;
-}
+
 #restart-button {
   cursor: pointer;
   margin-right: 100px;
   margin-left: 100px;
 }
-
-/* #count-up-timer {
-  font-size: 28px;
-} */
 
 table {
   align-self: center;

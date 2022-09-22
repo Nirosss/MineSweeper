@@ -50,12 +50,11 @@ function setMinesNegsCount(elCell, cellI, cellJ) {
     for (var j = cellJ - 1; j <= cellJ + 1; j++) {
       if (j < 0 || j >= gBoard[i].length) continue
       if (i === cellI && j === cellJ) continue
-
       if (gBoard[i][j].isMine) minesCount++
+      //if (!minesCount) expandShown(i, j) // to do: find a solution to expand
     }
     gBoard[cellI][cellJ].minesAroundCount = minesCount
   }
-  // if (!minesCount) expandShown(cellI, cellJ)
   renderCell(elCell, cellI, cellJ)
 }
 
@@ -107,11 +106,14 @@ function checkVictory() {
   }
 }
 
-// function expandShown(i, j) {
-//   var newCellI = i
-//   var newCellJ = j + 1
-//   var newCellId = (newCellI + 1) * (newCellJ + 1)
-//   elCell = document.getElementById(`$newCellId`)
-//   console.log(elCell)
-//   setMinesNegsCount(elCell, newCellI, newCellJ)
+// function expandShown(cellI, cellJ) {
+//   var minesCount = 0
+//   for (var i = cellI - 1; i <= cellI + 1; i++) {
+//     if (i < 0 || i >= gBoard.length) continue
+//     for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+//       if (j < 0 || j >= gBoard[i].length) continue
+//       if (i === cellI && j === cellJ) continue
+//     }
+//     if (!minesCount) gBoard[i][j].isShown = true setMinesNegsCount(cellI, cellJ)
+//   }
 // }
