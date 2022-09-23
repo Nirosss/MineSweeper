@@ -3,12 +3,17 @@
     <title> </title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-     <body style ="  text-align: center;
-       background: url('../img/background.jpg');
-       background-size: cover;
-       background-repeat: no-repeat;"onload="initGame()">
+  <body style ="  text-align: center;
+  background: url('/img/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;"onload="initGame()">
     <h1>Shoola! Ha-Mokshim</h1>
-    <div class="level-buttons"></div>
+    <div class="level-buttons">
+      <button "data=0" onclick="difficultiesSelector(0)" > 
+        Easy </button><button "data=1" onclick="difficultiesSelector(1)" > 
+        Medium </button><button "data=2" onclick="difficultiesSelector(2)" > 
+        Hard </button>
+    </div>
     <div class="game-data">
       <span
         >Flags
@@ -24,5 +29,5 @@
     </div>
     <script src="js/util.js"></script>
     <script src="js/game.js"></script>
-      </body>
+  </body>
 </html>
