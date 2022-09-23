@@ -109,8 +109,22 @@ function checkVictory() {
   }
 }
 
-function expandShown(board, elCell, i, j) {
-  renderCell(elCell, i, j)
-  // if (!setMinesNegsCount(elCell, i, j)) setMinesNegsCount(elCell, i, j)
-  //expandShown(board, elCell, i, j)
+function expandShown(board, elCell, cellI, cellJ) {
+  console.log(elCell)
+  var minesCount = 0
+  var currNegCell
+  for (var i = cellI - 1; i <= cellI + 1; i++) {
+    if (i < 0 || i >= gBoard.length) continue
+    for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+      if (j < 0 || j >= gBoard[i].length) continue
+      if (i === cellI && j === cellJ) continue
+      if (gBoard[i][j].isMine) minesCount++
+      currNegCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+    }
+    gBoard[cellI][cellJ].minesAroundCount = minesCount
+    // if (!minesCount) {
+    // expandShown(gBoard, currNegCell, i, j)
+    //cellClicked(elCell, i, j)
+    renderCell(elCell, cellI, cellJ)
+  }
 }
