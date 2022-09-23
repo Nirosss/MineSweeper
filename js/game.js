@@ -52,7 +52,7 @@ function setMinesNegsCount(elCell, cellI, cellJ) {
       if (i === cellI && j === cellJ) continue
       if (gBoard[i][j].isMine) minesCount++
       currNegCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
-      if (!minesCount) {
+      if (!minesCount && !gBoard[cellI][cellJ].isMine) {
         expandShown(gBoard, currNegCell, i, j)
       }
     }
@@ -124,7 +124,7 @@ function expandShown(board, elCell, cellI, cellJ) {
     gBoard[cellI][cellJ].minesAroundCount = minesCount
     // if (!minesCount) {
     // expandShown(gBoard, currNegCell, i, j)
-    //cellClicked(elCell, i, j)
+
     renderCell(elCell, cellI, cellJ)
   }
 }
