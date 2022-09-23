@@ -75,14 +75,3 @@ document.querySelector('.game-board').addEventListener(
   },
   false
 )
-// Switched to passive mode in the HTML
-// function renderButtons() {
-//   var strHTML = ''
-//   for (var i = 0; i < 3; i++) {
-//     strHTML += `<button "data=${i}" onclick="difficultiesSelector(${i})" >
-//     ${gLevel[i].label} </button>`
-//   }
-//   console.log(strHTML)
-//   var elButton = document.querySelector('.level-buttons')
-//   elButton.innerHTML = strHTML
-// }

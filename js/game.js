@@ -16,13 +16,11 @@ function initGame() {
   //level = 0) {{}
   clearGameData()
   gGame.isOn = true
-  //renderButtons()
   buildBoard(gLevel[currLevel])
   renderBoard(gBoard)
 }
 
 function buildBoard(level) {
-  var minesOnboard = 0
   for (var i = 0; i < level.SIZE; i++) {
     gBoard[i] = []
     for (var j = 0; j < level.SIZE; j++) {
@@ -32,42 +30,52 @@ function buildBoard(level) {
         isMine: false,
         isMarked: false,
       }
-      if (minesOnboard < level.MINES) {
-        // add support for levels
-        gBoard[i][j].isMine = Math.random() > 0.7 ? true : false
-        if (gBoard[i][j].isMine === true) minesOnboard++
-      }
     }
   }
   return gBoard
 }
 
-function setMinesNegsCount(elCell, cellI, cellJ) {
-  var currNegCell
-  var minesCount = 0
-  for (var i = cellI - 1; i <= cellI + 1; i++) {
-    if (i < 0 || i >= gBoard.length) continue
-    for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-      if (j < 0 || j >= gBoard[i].length) continue
-      if (i === cellI && j === cellJ) continue
-      if (gBoard[i][j].isMine) minesCount++
-      currNegCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
-      if (!minesCount && !gBoard[cellI][cellJ].isMine) {
-        expandShown(gBoard, currNegCell, i, j)
+function setMinesNegsCount(board) {
+  var minesAroundCount = 0
+  for (var cellI = 0; cellI < board.length; cellI++) {
+    for (var cellJ = 0; cellJ < board[0].length; cellJ++) {
+      for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+          if (j < 0 || j >= gBoard[i].length) continue
+          if (i === cellI && j === cellJ) continue
+          if (gBoard[i][j].isMine) minesAroundCount++
+        }
+        gBoard[cellI][cellJ].minesAroundCount = minesAroundCount
       }
+      minesAroundCount = 0
     }
-    gBoard[cellI][cellJ].minesAroundCount = minesCount
-    renderCell(elCell, cellI, cellJ)
   }
-  return minesCount
+}
+function cellClicked(elCell, cellI, cellJ) {
+  if (!gameTimer) {
+    gameTimer = setInterval(countUpTimer, 1000)
+    placeMines(gBoard, cellI, cellJ)
+  }
+  renderCell(elCell, cellI, cellJ)
+  if (!gBoard[cellI][cellJ].minesAroundCount && !gBoard[cellI][cellJ].isMine) {
+    expandShown(gBoard, elCell, cellI, cellJ)
+  }
+  checkGameOver(cellI, cellJ)
 }
 
-function cellClicked(elCell, cellI, cellJ) {
-  if (!gameTimer) gameTimer = setInterval(countUpTimer, 1000)
-
-  setMinesNegsCount(elCell, cellI, cellJ)
-  //renderCell(elCell, cellI, cellJ)
-  checkGameOver(cellI, cellJ)
+function placeMines(board, cellI, cellJ) {
+  var minesOnboard = 0
+  for (var i = 0; i < board.length; i++) {
+    for (var j = 0; j < board[0].length; j++) {
+      if (i === cellI && j === cellJ) continue
+      if (minesOnboard < gLevel[currLevel].MINES) {
+        gBoard[i][j].isMine = Math.random() > 0.66 ? true : false
+        if (gBoard[i][j].isMine === true) minesOnboard++
+      }
+    }
+  }
+  setMinesNegsCount(board)
 }
 
 function cellMarked(elCell, cellI, cellJ) {
@@ -103,28 +111,21 @@ function checkVictory() {
   var clearedCells = gGame.shownCount + foundMines
   if (clearedCells === gBoard.length ** 2) {
     document.getElementById('restart-button').innerText = '😎'
-    console.log('Game Over')
     gGame.isOn = false
     clearInterval(gameTimer)
   }
 }
 
 function expandShown(board, elCell, cellI, cellJ) {
-  console.log(elCell)
-  var minesCount = 0
+  // console.log(elCell)
   var currNegCell
   for (var i = cellI - 1; i <= cellI + 1; i++) {
-    if (i < 0 || i >= gBoard.length) continue
+    if (i < 0 || i >= board.length) continue
     for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-      if (j < 0 || j >= gBoard[i].length) continue
+      if (j < 0 || j >= board[i].length) continue
       if (i === cellI && j === cellJ) continue
-      if (gBoard[i][j].isMine) minesCount++
       currNegCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+      if (!board[i][j].isMine) renderCell(currNegCell, i, j)
     }
-    gBoard[cellI][cellJ].minesAroundCount = minesCount
-    // if (!minesCount) {
-    // expandShown(gBoard, currNegCell, i, j)
-
-    renderCell(elCell, cellI, cellJ)
   }
 }
