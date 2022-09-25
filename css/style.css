@@ -7,14 +7,15 @@
 
 h1 {
   color: azure;
-  font-size: 50px;
+  font-size: 45px;
+  margin: 5px;
 }
 .level-buttons {
   width: 320px;
   height: 30px;
   margin: auto;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-radius: 20px;
   background-image: linear-gradient(to left, red, orange, yellow, green);
   text-align: center;
@@ -51,7 +52,7 @@ table {
 }
 
 .game-area {
-  margin-top: 50px;
+  margin-top: 40px;
 
   margin: auto;
 }

@@ -37,7 +37,6 @@ function difficultiesSelector(diffI) {
   initGame()
 }
 
-
 function clearGameData() {
   gGame.isOn = false
   gBoard = []
