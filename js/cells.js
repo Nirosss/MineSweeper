@@ -19,6 +19,8 @@ function cellClicked(elCell, cellI, cellJ) {
     gameTimer = setInterval(countUpTimer, 1000)
     placeMines(gBoard, cellI, cellJ)
   }
+  if (gBoard[cellI][cellJ].isMarked) return
+
   renderCell(elCell, cellI, cellJ)
   if (!gBoard[cellI][cellJ].minesAroundCount && !gBoard[cellI][cellJ].isMine) {
     expandShown(gBoard, elCell, cellI, cellJ)
@@ -37,18 +39,19 @@ function cellMarked(elCell, cellI, cellJ) {
     gBoard[cellI][cellJ].isMarked = false
     elCell.innerHTML = ''
     gGame.markedCount--
-    notUsedFlags++
+    gNotUsedFlags++
   } else {
-    if (notUsedFlags < 1) return
+    if (gNotUsedFlags < 1) return
     gBoard[cellI][cellJ].isMarked = true
     elCell.innerHTML = FLAG
     gGame.markedCount += 1
-    notUsedFlags--
-    if (gBoard[cellI][cellJ].isMine) foundMines++
+    gNotUsedFlags--
+    if (gBoard[cellI][cellJ].isMine) gFoundMines++
+
+    if (!undoToggle) movesStack.unshift({ i: cellI, j: cellJ, isBatch: false })
   }
-  movesStack.unshift({ i: cellI, j: cellJ, isBatch: false })
   checkVictory()
-  document.getElementById('flags-counter').innerText = notUsedFlags
+  document.getElementById('flags-counter').innerText = gNotUsedFlags
 }
 
 function expandShown(board, elCell, cellI, cellJ) {

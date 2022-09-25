@@ -41,18 +41,63 @@ function clearGameData() {
   gGame.isOn = false
   gBoard = []
   clearInterval(gameTimer)
+  movesStack = []
   gameTimer = 0
   gGame.secsPassed = 0
   totalSeconds = 0
   gGame.shownCount = 0
   gGame.markedCount = 0
-  foundMines = 0
+  gFoundMines = 0
   document.getElementById(
     'count-up-timer'
   ).innerHTML = `Time ${gGame.secsPassed}`
-  document.getElementById('flags-counter').innerHTML = `${notUsedFlags}`
+  document.getElementById('flags-counter').innerHTML = `${gNotUsedFlags}`
   document.getElementById('restart-button').innerText = '😊'
 }
+
+function renderLives(lives) {
+  var strHTML = ''
+  switch (lives) {
+    case 1:
+      strHTML = `Lives: ❤️`
+      break
+    case 2:
+      strHTML = `Lives: ❤️❤️`
+      break
+    case 3:
+      strHTML = `Lives: ❤️❤️❤️`
+      break
+  }
+  var elLives = document.getElementById('lives')
+  elLives.innerHTML = strHTML
+}
+
+function undo() {
+  undoToggle = false
+  if (gGame.isOn && movesStack.length > 0) {
+    var moveI = movesStack[0].i
+    var moveJ = movesStack[0].j
+    var elCell = document.querySelector(
+      `[data-i="${moveI}"][data-j="${moveJ}"]`
+    )
+    if (gBoard[moveI][moveJ].isMarked) {
+      cellMarked(elCell, moveI, moveJ)
+      undoToggle = true
+    } else {
+      elCell.innerText = ''
+      gBoard[moveI][moveJ].isShown = !gBoard[moveI][moveJ].isShown
+      elCell.classList.remove('shown')
+    }
+    movesStack.splice(0, 1)
+    if (
+      movesStack.length > 0 &&
+      movesStack[0].isBatch &&
+      !gBoard[moveI][moveJ].isMarked
+    )
+      undo()
+  }
+}
+
 document.querySelector('.game-board').addEventListener(
   'contextmenu',
   function (e) {

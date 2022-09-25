@@ -1,20 +1,26 @@
 'use strict'
+// globals
 var gameTimer
-var foundMines = 0
-var notUsedFlags
+var gFoundMines = 0
+var gNotUsedFlags
 var movesStack = []
+var undoToggle
+var lives
 const FLAG = `<img src="img/red-flag25px.png" />`
 const MINE = `<img src="img/mine28px.png" alt="Mine" />`
 var gBoard = []
+
 var gGame = { isOn: false, shownCount: 0, markedCount: 0, secsPassed: 0 }
 var gLevel = [
-  { SIZE: 4, MINES: 2 }, // should remove label and cancel buttons render:done
-  { SIZE: 8, MINES: 14 },
-  { SIZE: 12, MINES: 32 },
+  { SIZE: 4, MINES: 2, LIVES: 1 },
+  { SIZE: 8, MINES: 14, LIVES: 2 },
+  { SIZE: 12, MINES: 32, LIVES: 3 },
 ]
+
 function initGame() {
-  notUsedFlags = gLevel[currLevel].MINES
-  movesStack = [] // move to clear data
+  gNotUsedFlags = gLevel[currLevel].MINES
+  lives = gLevel[currLevel].LIVES
+  renderLives(lives)
   clearGameData()
   gGame.isOn = true
   buildBoard(gLevel[currLevel])
@@ -60,7 +66,7 @@ function placeMines(board, cellI, cellJ) {
     for (var j = 0; j < board[0].length; j++) {
       if (i === cellI && j === cellJ) continue
       if (minesOnboard < gLevel[currLevel].MINES) {
-        gBoard[i][j].isMine = Math.random() > 0.66 ? true : false
+        gBoard[i][j].isMine = Math.random() > 0.7 ? true : false
         if (gBoard[i][j].isMine === true) minesOnboard++
       }
     }
@@ -70,6 +76,10 @@ function placeMines(board, cellI, cellJ) {
 
 function checkGameOver(cellI, cellJ) {
   if (gBoard[cellI][cellJ].isMine) {
+    lives--
+    renderLives(lives)
+  }
+  if (!lives) {
     document.getElementById('restart-button').innerText = '🤯'
     gGame.isOn = false
     clearInterval(gameTimer)
@@ -78,31 +88,10 @@ function checkGameOver(cellI, cellJ) {
 }
 
 function checkVictory() {
-  var clearedCells = gGame.shownCount + foundMines
+  var clearedCells = gGame.shownCount + gFoundMines
   if (clearedCells === gBoard.length ** 2) {
     document.getElementById('restart-button').innerText = '😎'
     gGame.isOn = false
     clearInterval(gameTimer)
-  }
-}
-
-function undo() {
-  if (gGame.isOn && movesStack.length > 0) {
-    var moveI = movesStack[0].i
-    var moveJ = movesStack[0].j
-    var elCell = document.querySelector(
-      `[data-i="${moveI}"][data-j="${moveJ}"]`
-    )
-    if (gBoard[moveI][moveJ].isMarked) {
-      cellMarked(elCell, moveI, moveJ)
-    } else {
-      gBoard[moveI][moveJ].isShown = !gBoard[moveI][moveJ].isShown
-      elCell.classList.remove('shown')
-      elCell.innerText = ''
-    }
-    movesStack.splice(0, 1)
-    while (movesStack.length > 0 && movesStack[0].isBatch) {
-      undo()
-    }
   }
 }

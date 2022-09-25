@@ -33,6 +33,7 @@ h1 {
 
 .game-data {
   height: 40px;
+  margin: auto;
   display: inline-block;
   align-self: center;
   margin-bottom: 10px;
@@ -41,19 +42,24 @@ h1 {
 }
 
 #restart-button {
-  cursor: pointer;
-  margin-right: 100px;
-  margin-left: 100px;
+  margin-right: 25px;
+}
+
+#flags-counter {
+  margin-right: 25px;
+}
+
+#lives {
+  margin-right: 25px;
 }
 
 table {
-  align-self: center;
   display: inline-block;
+  align-self: center;
 }
 
 .game-area {
   margin-top: 40px;
-
   margin: auto;
 }
 
@@ -76,7 +82,8 @@ table {
 }
 
 .undo {
-  margin-top: 30px;
+  margin-top: 20px;
+  position: relative;
 }
 
 .undo-button {
