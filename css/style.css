@@ -73,3 +73,12 @@ table {
 .cell.shown {
   background-color: rgb(168, 159, 159);
 }
+
+.undo {
+  margin-top: 30px;
+}
+
+.undo-button {
+  width: auto;
+  border-radius: 3px;
+}

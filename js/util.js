@@ -37,19 +37,6 @@ function difficultiesSelector(diffI) {
   initGame()
 }
 
-function renderCell(elCell, cellI, cellJ) {
-  if (!gGame.isOn) return
-  if (gBoard[cellI][cellJ].isShown || gBoard[cellI][cellJ].isMarked) return
-  if (gBoard[cellI][cellJ].isMine) {
-    elCell.innerHTML = MINE
-  } else {
-    if (gBoard[cellI][cellJ].minesAroundCount)
-      elCell.innerText = gBoard[cellI][cellJ].minesAroundCount
-  }
-  gBoard[cellI][cellJ].isShown = true
-  elCell.classList.add('shown')
-  gGame.shownCount++
-}
 
 function clearGameData() {
   gGame.isOn = false

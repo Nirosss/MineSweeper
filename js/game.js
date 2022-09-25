@@ -2,7 +2,8 @@
 var gameTimer
 var foundMines = 0
 var notUsedFlags
-const FLAG = `<img src="img/flag25px.png" alt="flag" />`
+var movesStack = []
+const FLAG = `<img src="img/red-flag25px.png" />`
 const MINE = `<img src="img/mine28px.png" alt="Mine" />`
 var gBoard = []
 var gGame = { isOn: false, shownCount: 0, markedCount: 0, secsPassed: 0 }
@@ -13,7 +14,7 @@ var gLevel = [
 ]
 function initGame() {
   notUsedFlags = gLevel[currLevel].MINES
-  //level = 0) {{}
+  movesStack = [] // move to clear data
   clearGameData()
   gGame.isOn = true
   buildBoard(gLevel[currLevel])
@@ -52,17 +53,6 @@ function setMinesNegsCount(board) {
     }
   }
 }
-function cellClicked(elCell, cellI, cellJ) {
-  if (!gameTimer) {
-    gameTimer = setInterval(countUpTimer, 1000)
-    placeMines(gBoard, cellI, cellJ)
-  }
-  renderCell(elCell, cellI, cellJ)
-  if (!gBoard[cellI][cellJ].minesAroundCount && !gBoard[cellI][cellJ].isMine) {
-    expandShown(gBoard, elCell, cellI, cellJ)
-  }
-  checkGameOver(cellI, cellJ)
-}
 
 function placeMines(board, cellI, cellJ) {
   var minesOnboard = 0
@@ -76,26 +66,6 @@ function placeMines(board, cellI, cellJ) {
     }
   }
   setMinesNegsCount(board)
-}
-
-function cellMarked(elCell, cellI, cellJ) {
-  if (!gameTimer) gameTimer = setInterval(countUpTimer, 1000)
-  if (notUsedFlags < 1) return
-  if (gBoard[cellI][cellJ].isShown) return
-  if (gBoard[cellI][cellJ].isMarked) {
-    gBoard[cellI][cellJ].isMarked = false
-    elCell.innerHTML = ''
-    gGame.markedCount--
-    notUsedFlags++
-  } else {
-    gBoard[cellI][cellJ].isMarked = true
-    elCell.innerHTML = FLAG
-    gGame.markedCount += 1
-    notUsedFlags--
-    if (gBoard[cellI][cellJ].isMine) foundMines++
-  }
-  checkVictory()
-  document.getElementById('flags-counter').innerText = notUsedFlags
 }
 
 function checkGameOver(cellI, cellJ) {
@@ -116,16 +86,23 @@ function checkVictory() {
   }
 }
 
-function expandShown(board, elCell, cellI, cellJ) {
-  // console.log(elCell)
-  var currNegCell
-  for (var i = cellI - 1; i <= cellI + 1; i++) {
-    if (i < 0 || i >= board.length) continue
-    for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-      if (j < 0 || j >= board[i].length) continue
-      if (i === cellI && j === cellJ) continue
-      currNegCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
-      if (!board[i][j].isMine) renderCell(currNegCell, i, j)
+function undo() {
+  if (gGame.isOn && movesStack.length > 0) {
+    var moveI = movesStack[0].i
+    var moveJ = movesStack[0].j
+    var elCell = document.querySelector(
+      `[data-i="${moveI}"][data-j="${moveJ}"]`
+    )
+    if (gBoard[moveI][moveJ].isMarked) {
+      cellMarked(elCell, moveI, moveJ)
+    } else {
+      gBoard[moveI][moveJ].isShown = !gBoard[moveI][moveJ].isShown
+      elCell.classList.remove('shown')
+      elCell.innerText = ''
+    }
+    movesStack.splice(0, 1)
+    while (movesStack.length > 0 && movesStack[0].isBatch) {
+      undo()
     }
   }
 }
