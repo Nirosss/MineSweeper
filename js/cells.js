@@ -23,7 +23,7 @@ function cellClicked(elCell, cellI, cellJ) {
 
   renderCell(elCell, cellI, cellJ)
   if (!gBoard[cellI][cellJ].minesAroundCount && !gBoard[cellI][cellJ].isMine) {
-    expandShown(gBoard, elCell, cellI, cellJ)
+    expandShown(gBoard, cellI, cellJ)
   }
   movesStack.unshift({ i: cellI, j: cellJ, isBatch: false })
   checkGameOver(cellI, cellJ)
@@ -54,7 +54,7 @@ function cellMarked(elCell, cellI, cellJ) {
   document.getElementById('flags-counter').innerText = gNotUsedFlags
 }
 
-function expandShown(board, elCell, cellI, cellJ) {
+function expandShown(board, cellI, cellJ) {
   var currNegCell
   for (var i = cellI - 1; i <= cellI + 1; i++) {
     if (i < 0 || i >= board.length) continue
@@ -65,9 +65,9 @@ function expandShown(board, elCell, cellI, cellJ) {
       if (!board[i][j].isMine) {
         renderCell(currNegCell, i, j)
       }
-      //   if (board[i][j].minesAroundCount === 0 && !board[i][j].isMine)
-      //     console.log(currNegCell, i, j)
-      //   // cellClicked(currNegCell, i, j)
+      // if (board[i][j].minesAroundCount === 0 && !board[i][j].isMine) {
+      //   expandShown(board, i, j)
+      //   console.log('out', currNegCell, i, j)
       movesStack.unshift({ i: i, j: j, isBatch: true })
     }
   }

@@ -79,7 +79,7 @@ function checkGameOver(cellI, cellJ) {
     lives--
     renderLives(lives)
   }
-  if (!lives) {
+  if (lives < 0) {
     document.getElementById('restart-button').innerText = '🤯'
     gGame.isOn = false
     clearInterval(gameTimer)

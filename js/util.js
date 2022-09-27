@@ -58,6 +58,9 @@ function clearGameData() {
 function renderLives(lives) {
   var strHTML = ''
   switch (lives) {
+    case 0:
+      strHTML = `Lives: 🥵`
+      break
     case 1:
       strHTML = `Lives: ❤️`
       break
@@ -66,6 +69,9 @@ function renderLives(lives) {
       break
     case 3:
       strHTML = `Lives: ❤️❤️❤️`
+      break
+    default:
+      strHTML = `Lives: ☠️`
       break
   }
   var elLives = document.getElementById('lives')
@@ -86,6 +92,7 @@ function undo() {
     } else {
       elCell.innerText = ''
       gBoard[moveI][moveJ].isShown = !gBoard[moveI][moveJ].isShown
+      gGame.shownCount--
       elCell.classList.remove('shown')
     }
     movesStack.splice(0, 1)
